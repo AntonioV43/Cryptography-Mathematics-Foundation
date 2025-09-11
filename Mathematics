@@ -1,0 +1,145 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/AntonioV43/Cryptography-Mathematics-Foundation/blob/main/Mathematics\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Greatest Common Divisor using Euclid's Algorithm\n",
+        "def find_gcd(a, b):\n",
+        "    while b != 0:\n",
+        "        a, b = b, a % b\n",
+        "    return a\n",
+        "\n",
+        "# Euler's Totient Function φ(n)\n",
+        "def euler_totient(n):\n",
+        "    result = n\n",
+        "    factor = 2\n",
+        "    temp = n\n",
+        "    while factor * factor <= temp:\n",
+        "        if temp % factor == 0:\n",
+        "            # remove all factors of \"factor\"\n",
+        "            while temp % factor == 0:\n",
+        "                temp //= factor\n",
+        "            result -= result // factor\n",
+        "        factor += 1\n",
+        "    if temp > 1:\n",
+        "        result -= result // temp\n",
+        "    return result\n",
+        "\n",
+        "# Fermat Primality Test (simple)\n",
+        "def fermat_test(n, base):\n",
+        "    return pow(base, n - 1, n) == 1\n",
+        "\n",
+        "# Chinese Remainder Theorem (CRT)\n",
+        "def chinese_remainder(remainders, moduli):\n",
+        "    total_mod = 1\n",
+        "    for mod in moduli:\n",
+        "        total_mod *= mod\n",
+        "\n",
+        "    result = 0\n",
+        "    for remainder, mod in zip(remainders, moduli):\n",
+        "        partial = total_mod // mod\n",
+        "        inv = pow(partial, -1, mod)  # modular inverse\n",
+        "        result += remainder * partial * inv\n",
+        "\n",
+        "    return result % total_mod\n",
+        "\n",
+        "# ======================================\n",
+        "# Question Section\n",
+        "# ======================================\n",
+        "\n",
+        "print(\"=== BASIC QUESTIONS ===\")\n",
+        "# 1. (17 × 23) mod 19\n",
+        "ans1 = (17 * 23) % 19\n",
+        "print(\"Result of (17 × 23) mod 19 =\", ans1)\n",
+        "\n",
+        "# 2. GCD of 48 and 18\n",
+        "ans2 = find_gcd(48, 18)\n",
+        "print(\"GCD(48, 18) =\", ans2)\n",
+        "\n",
+        "print(\"\\n=== INTERMEDIATE QUESTIONS ===\")\n",
+        "# 3. Euler's Totient φ(21)\n",
+        "ans3 = euler_totient(21)\n",
+        "print(\"φ(21) =\", ans3)\n",
+        "\n",
+        "# 4. Fermat's Primality Test for n=13, base=2\n",
+        "n, base = 13, 2\n",
+        "ans4 = fermat_test(n, base)\n",
+        "print(f\"Fermat test for n={n}, base={base} -> {ans4}\")\n",
+        "if ans4:\n",
+        "    print(f\"{n} is likely prime.\")\n",
+        "else:\n",
+        "    print(f\"{n} is composite.\")\n",
+        "\n",
+        "print(\"\\n=== ADVANCED QUESTIONS ===\")\n",
+        "# 5. CRT: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7)\n",
+        "remainders = [2, 3, 2]\n",
+        "moduli = [3, 5, 7]\n",
+        "ans5 = chinese_remainder(remainders, moduli)\n",
+        "print(f\"CRT Result: x ≡ {ans5} (mod {3*5*7})\")\n",
+        "\n",
+        "# 6. Verifying Euler's Theorem for n=10, a=3\n",
+        "n, a = 10, 3\n",
+        "phi_n = euler_totient(n)\n",
+        "euler_result = pow(a, phi_n, n)\n",
+        "print(f\"φ({n}) =\", phi_n)\n",
+        "print(f\"{a}^{phi_n} mod {n} =\", euler_result)\n",
+        "if euler_result == 1 and find_gcd(a, n) == 1:\n",
+        "    print(\"Euler's Theorem ✅ holds.\")\n",
+        "else:\n",
+        "    print(\"Euler's Theorem ❌ does not hold.\")\n"
+      ],
+      "metadata": {
+        "id": "xesfzvMnV9og",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "28b711f5-e49f-495c-f03c-9f70fa2a7ae5"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "=== BASIC QUESTIONS ===\n",
+            "Result of (17 × 23) mod 19 = 11\n",
+            "GCD(48, 18) = 6\n",
+            "\n",
+            "=== INTERMEDIATE QUESTIONS ===\n",
+            "φ(21) = 12\n",
+            "Fermat test for n=13, base=2 -> True\n",
+            "13 is likely prime.\n",
+            "\n",
+            "=== ADVANCED QUESTIONS ===\n",
+            "CRT Result: x ≡ 23 (mod 105)\n",
+            "φ(10) = 4\n",
+            "3^4 mod 10 = 1\n",
+            "Euler's Theorem ✅ holds.\n"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
